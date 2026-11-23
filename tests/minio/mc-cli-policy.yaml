@@ -30,8 +30,8 @@ spec:
                 echo "Bucket upload should be disallowed but succeeded instead"
                 exit 1
               fi
-              mc ls "myminio/$BN"
-              echo "Bucket upload failed successfully and list completed successfully"
+              mc ls "myminio/$BN" || exit 1
+              echo "Bucket upload was denied and listing succeeded"
           env:
             - name: MINIO_SERVER
               value: "http://uds-minio-hl.minio.svc.cluster.local:9000"
