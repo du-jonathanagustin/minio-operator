@@ -28,7 +28,13 @@ spec:
               echo "Hello from Kubernetes Job!" > /tmp/hello.txt
               mc cp /tmp/hello.txt "myminio/$BN/hello.txt" || exit 1
               mc cp "myminio/$BN/hello.txt" /tmp/downloaded_hello.txt || exit 1
-              echo "Bucket, upload, and download operations completed successfully"
+              uploaded_sha=$(sha256sum < /tmp/hello.txt) || exit 1
+              downloaded_sha=$(sha256sum < /tmp/downloaded_hello.txt) || exit 1
+              if [ "$uploaded_sha" != "$downloaded_sha" ]; then
+                echo "Downloaded object differs from the uploaded file" >&2
+                exit 1
+              fi
+              echo "Upload and download checksums match"
           env:
             - name: MINIO_SERVER
               value: "http://uds-minio-hl.minio.svc.cluster.local:9000"
