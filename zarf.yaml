@@ -90,5 +90,5 @@ components:
     images:
       - cgr.dev/defenseunicorns.com/minio-operator-sidecar:7.1.1
       - cgr.dev/defenseunicorns.com/minio-operator:7.1.1
-      - cgr.dev/defenseunicorns.com/minio:v0.20261116.001140
+      - cgr.dev/defenseunicorns.com/minio:v0.20261123.001037
       - cgr.dev/defenseunicorns.com/minio-client:0.20250813.083541
