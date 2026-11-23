@@ -27,13 +27,13 @@ tasks:
   - name: setup-bucket
     actions:
       - description: Create the data store test package for the Minio instance
-        cmd: ./uds zarf package create tests/minio --confirm --no-progress --architecture="${UDS_ARCH}" --skip-sbom --no-progress
+        cmd: ./uds zarf package create tests/minio --confirm --architecture="${UDS_ARCH}" --skip-sbom
       - description: Deploy the test package into the cluster
-        cmd: ./uds zarf package deploy "zarf-package-minio-test-${UDS_ARCH}-0.1.0.tar.zst" --confirm --no-progress
+        cmd: ./uds zarf package deploy "zarf-package-minio-test-${UDS_ARCH}-0.1.0.tar.zst" --confirm
         # temp solution to test both sidecar and ambient modes TODO: Remove in future release
         if: ${{ eq .variables.ISTIO_MODE "ambient" }}
       - description: Deploy the test package into the cluster in sidecar mode
-        cmd: ./uds zarf package deploy "zarf-package-minio-test-${UDS_ARCH}-0.1.0.tar.zst" --confirm --no-progress --set ISTIO_MODE=sidecar
+        cmd: ./uds zarf package deploy "zarf-package-minio-test-${UDS_ARCH}-0.1.0.tar.zst" --confirm --set-values istio.mode=sidecar
         if: ${{ eq .variables.ISTIO_MODE "sidecar" }}
       - description: Validate Test Job Completed
         maxTotalSeconds: 360

@@ -1,32 +1,30 @@
 # Copyright 2024 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
-# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+apiVersion: zarf.dev/v1beta1
 kind: ZarfPackageConfig
 metadata:
   name: minio-test
   description: "A test that minio can be connected to and is functional"
   version: 0.1.0
 
-variables:
-  - name: ISTIO_MODE
-    description: "The Istio mode to use for the test"
-    default: ambient
-
+values:
+  files:
+    - zarf-values.yaml
 
 components:
   # Reconcile the UDS Package before creating pods. In sidecar mode the namespace
   # must be labeled for injection before the Jobs are admitted.
   - name: configure-mc-cli-network
-    required: true
     manifests:
       - name: mc-cli-package
         namespace: mc-cli
+        enableTemplating: true
         files:
           - uds-package.yaml
     actions:
       onDeploy:
-        after:
+        onSuccess:
           - description: Wait for the mc-cli UDS Package
             maxTotalSeconds: 300
             wait:
@@ -37,7 +35,6 @@ components:
                 condition: "'{.status.phase}'=Ready"
 
   - name: test-minio-connectivity
-    required: true
     manifests:
       - name: mc-cli-jobs
         namespace: mc-cli
@@ -45,4 +42,4 @@ components:
           - mc-cli-test.yaml
           - mc-cli-policy.yaml
     images:
-      - ghcr.io/uds-packages/minio-operator/container/chainguard/minio-client:0.20250813.083541-r29
+      - name: ghcr.io/uds-packages/minio-operator/container/chainguard/minio-client:0.20250813.083541-r29
