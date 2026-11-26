@@ -5,7 +5,7 @@ kind: ZarfPackageConfig
 metadata:
   name: minio-operator
   description: "MinIO provides a powerful and scalable storage solution that can be deployed across private, public, and hybrid clouds using Kubernetes. Users benefit from lightning-fast performance, easy scalability, and seamless hybrid cloud deployments. The UI is simple yet robust, offering a management console for configuring tenants and monitoring clusters. The MinIO Kubernetes Operator simplifies tenant deployments and integrates easily with cloud environments, providing enhanced control and flexibility."
-  version: "dev"
+  version: "7.1.1-uds.29.snapshot.retained-candidate"
   annotations:
     dev.uds.title: MinIO Operator
     dev.uds.tagline: Open Source Object Storage
